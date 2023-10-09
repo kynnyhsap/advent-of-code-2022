@@ -24,19 +24,19 @@ func main() {
 		compartment2 := rucksack[len(rucksack)/2 : len(rucksack)]
 
 		for _, item1 := range compartment1 {
-      found := false
+			found := false
 
 			for _, item2 := range compartment2 {
 				if item2 == item1 {
-          found = true
+					found = true
 					priorities += getPriority(item1)
-          break
+					break
 				}
 			}
 
-      if found {
-        break
-      }
+			if found {
+				break
+			}
 		}
 	}
 
