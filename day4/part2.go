@@ -29,8 +29,7 @@ func main() {
 		y1, _ := strconv.Atoi(strings.Split(ranges[1], "-")[0])
 		y2, _ := strconv.Atoi(strings.Split(ranges[1], "-")[1])
 
-		// [x1 ... {y1 ... y2} ... x2] or [y1 ... {x1 ... x2} ... y2]
-		if (x1 <= y1 && y2 <= x2) || (y1 <= x1 && x2 <= y2) {
+		if (y1 <= x1 && x1 <= y2) || (y1 <= x2 && x2 <= y2) || (x1 <= y2 && y2 <= x2) || (x1 <= y1 && y1 <= x2) {
 			sum += 1
 		}
 	}
