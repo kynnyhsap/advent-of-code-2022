@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"os"
+	"strconv"
 )
 
 type Point struct {
@@ -61,17 +62,19 @@ func Part1() {
 	// 	fmt.Println("----------------------------------------------------------------")
 	// }
 
+	tailMovesCount := 0
+
 	lines := bytes.Split(input, []byte("\n"))
 
 	for _, motion := range lines {
 		direction := motion[0]
-		steps := int(motion[2] - '0')
+		steps, _ := strconv.Atoi(string(motion)[2:])
 
-		fmt.Printf("\n---------------------------------\nMove %c %d times\n", direction, steps)
+		fmt.Printf("\n-----------\nMove %c %d times\n", direction, steps)
 
 		for step := 0; step < steps; step += 1 {
-			fmt.Printf("- [Step %d]: starting position\n", step+1)
-			printHeadAndTail(&head, &tail)
+			// fmt.Printf("- [Step %d]: starting position\n", step+1)
+			// printHeadAndTail(&head, &tail)
 
 			// move head
 			if direction == 'U' {
@@ -86,8 +89,8 @@ func Part1() {
 				panic("Unkown direction")
 			}
 
-			fmt.Printf("Moved head %c\n", direction)
-			printHeadAndTail(&head, &tail)
+			// fmt.Printf("Moved head %c\n", direction)
+			// printHeadAndTail(&head, &tail)
 
 			isTailAdjacent := false
 			for _, point := range adjacent {
@@ -97,7 +100,7 @@ func Part1() {
 				}
 			}
 			if isTailAdjacent {
-				fmt.Println("Tail is adjecent, no need to move")
+				// fmt.Println("Tail is adjecent, no need to move")
 				printHeadAndTail(&head, &tail)
 				continue
 			}
@@ -112,7 +115,8 @@ func Part1() {
 				}
 			}
 
-			fmt.Println("Moved tail")
+			tailMovesCount += 1
+			// fmt.Println("Moved tail")
 			printHeadAndTail(&head, &tail)
 
 			// record tail position
@@ -132,23 +136,23 @@ func Part1() {
 	fmt.Println(len(visitedTailLocations))
 }
 
-const S = 2
+const S = 3
 
 func printHeadAndTail(h *Point, t *Point) {
-	fmt.Println("")
-	for y := h.y + S; y >= h.y-S; y -= 1 {
-		fmt.Printf("\t")
-		for x := h.x - S; x <= h.x+S; x += 1 {
-			if x == h.x && y == h.y {
-				fmt.Printf("H")
-			} else if x == t.x && y == t.y {
-				fmt.Printf("T")
-			} else {
-				fmt.Printf(".")
-			}
-		}
-		fmt.Println("")
-	}
-	fmt.Println("")
-	fmt.Printf("Head (%d, %d)\nTail(%d, %d)\n\n", h.x, h.y, t.x, t.y)
+	// fmt.Println("")
+	// for y := h.y + S; y >= h.y-S; y -= 1 {
+	// 	fmt.Printf("\t")
+	// 	for x := h.x - S; x <= h.x+S; x += 1 {
+	// 		if x == h.x && y == h.y {
+	// 			fmt.Printf("H")
+	// 		} else if x == t.x && y == t.y {
+	// 			fmt.Printf("T")
+	// 		} else {
+	// 			fmt.Printf(".")
+	// 		}
+	// 	}
+	// 	fmt.Println("")
+	// }
+	// fmt.Println("")
+	fmt.Printf("\tHead (%d, %d)  Tail (%d, %d)\n", h.x, h.y, t.x, t.y)
 }
