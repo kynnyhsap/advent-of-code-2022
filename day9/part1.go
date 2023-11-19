@@ -12,6 +12,7 @@ type Point struct {
 }
 
 func Part1() {
+
 	input, _ := os.ReadFile("./day9/input.txt")
 
 	head := Point{0, 0}
@@ -19,7 +20,9 @@ func Part1() {
 
 	visitedTailLocations := make([]Point, 0)
 
-	// these points represet allowed boundaries for tail to be considered adjecent to head
+	visitedTailLocations = append(visitedTailLocations, Point{0, 0})
+
+	// these points represent allowed boundaries for tail to be considered adjecent to head
 	adjacent := []Point{
 		{-1, 1},  // top left
 		{0, 1},   // top middle
@@ -51,12 +54,25 @@ func Part1() {
 	gaps[Point{2, -1}] = Point{1, 0}
 	gaps[Point{2, 1}] = Point{1, 0}
 
+	// for from, to := range gaps {
+	// 	fmt.Println("----------------------------------------------------------------")
+	// 	printHeadAndTail(&head, &from)
+	// 	printHeadAndTail(&head, &to)
+	// 	fmt.Println("----------------------------------------------------------------")
+	// }
+
 	lines := bytes.Split(input, []byte("\n"))
+
 	for _, motion := range lines {
 		direction := motion[0]
 		steps := int(motion[2] - '0')
 
+		fmt.Printf("\n---------------------------------\nMove %c %d times\n", direction, steps)
+
 		for step := 0; step < steps; step += 1 {
+			fmt.Printf("- [Step %d]: starting position\n", step+1)
+			printHeadAndTail(&head, &tail)
+
 			// move head
 			if direction == 'U' {
 				head.y += 1
@@ -70,6 +86,9 @@ func Part1() {
 				panic("Unkown direction")
 			}
 
+			fmt.Printf("Moved head %c\n", direction)
+			printHeadAndTail(&head, &tail)
+
 			isTailAdjacent := false
 			for _, point := range adjacent {
 				if point.x+head.x == tail.x && point.y+head.y == tail.y {
@@ -78,17 +97,23 @@ func Part1() {
 				}
 			}
 			if isTailAdjacent {
+				fmt.Println("Tail is adjecent, no need to move")
+				printHeadAndTail(&head, &tail)
 				continue
 			}
 
 			// move tail
 			for from, to := range gaps {
-				if from.x+head.x == tail.x && from.y+head.y == tail.y {
-					tail.x += to.x
-					tail.y += to.y
+
+				if tail.x-head.x == from.x && tail.y-head.y == from.y {
+					tail.x = head.x + to.x
+					tail.y = head.y + to.y
 					break
 				}
 			}
+
+			fmt.Println("Moved tail")
+			printHeadAndTail(&head, &tail)
 
 			// record tail position
 			visited := false
@@ -105,4 +130,25 @@ func Part1() {
 	}
 
 	fmt.Println(len(visitedTailLocations))
+}
+
+const S = 2
+
+func printHeadAndTail(h *Point, t *Point) {
+	fmt.Println("")
+	for y := h.y + S; y >= h.y-S; y -= 1 {
+		fmt.Printf("\t")
+		for x := h.x - S; x <= h.x+S; x += 1 {
+			if x == h.x && y == h.y {
+				fmt.Printf("H")
+			} else if x == t.x && y == t.y {
+				fmt.Printf("T")
+			} else {
+				fmt.Printf(".")
+			}
+		}
+		fmt.Println("")
+	}
+	fmt.Println("")
+	fmt.Printf("Head (%d, %d)\nTail(%d, %d)\n\n", h.x, h.y, t.x, t.y)
 }
