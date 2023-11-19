@@ -7,11 +7,6 @@ import (
 	"strconv"
 )
 
-type Point struct {
-	x int
-	y int
-}
-
 func Part1() {
 
 	input, _ := os.ReadFile("./day9/input.txt")
@@ -139,20 +134,20 @@ func Part1() {
 const S = 3
 
 func printHeadAndTail(h *Point, t *Point) {
-	// fmt.Println("")
-	// for y := h.y + S; y >= h.y-S; y -= 1 {
-	// 	fmt.Printf("\t")
-	// 	for x := h.x - S; x <= h.x+S; x += 1 {
-	// 		if x == h.x && y == h.y {
-	// 			fmt.Printf("H")
-	// 		} else if x == t.x && y == t.y {
-	// 			fmt.Printf("T")
-	// 		} else {
-	// 			fmt.Printf(".")
-	// 		}
-	// 	}
-	// 	fmt.Println("")
-	// }
-	// fmt.Println("")
+	fmt.Println("")
+	for y := h.y + S; y >= h.y-S; y -= 1 {
+		fmt.Printf("\t")
+		for x := h.x - S; x <= h.x+S; x += 1 {
+			if x == h.x && y == h.y {
+				fmt.Printf("H")
+			} else if x == t.x && y == t.y {
+				fmt.Printf("T")
+			} else {
+				fmt.Printf(".")
+			}
+		}
+		fmt.Println("")
+	}
+	fmt.Println("")
 	fmt.Printf("\tHead (%d, %d)  Tail (%d, %d)\n", h.x, h.y, t.x, t.y)
 }
